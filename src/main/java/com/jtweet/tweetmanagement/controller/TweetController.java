@@ -24,14 +24,13 @@ import com.jtweet.tweetmanagement.service.TweetService;
 public class TweetController {
 	
 	@Autowired
-	TweetService tweetService;
+	private TweetService tweetService;
 	
 	@Autowired
-	TweetRepository tweetRepository;
+	private TweetRepository tweetRepository;
 	
 	@GetMapping
-	public List<Tweet> listTweets()
-	{
+	public List<Tweet> listTweets() {
 		return this.tweetService.getList();
 	}
 	
@@ -48,9 +47,15 @@ public class TweetController {
 		ResponseBody responseBody = new ResponseBody(true, "Tweet created successfully");
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseBodyConverter.convert(responseBody));
 	}
+
+	@GetMapping("/user/{userId}")
+	public List<Tweet> tweetsListByUser(@PathVariable Integer userId)
+	{
+		return this.tweetService.getTweetsByUserId(userId);
+	}
 	
 	@GetMapping("/hashTag/{hashTag}")
-	public List<Tweet> listTweetsByHashTag(@PathVariable String hashTag)
+	public List<Tweet> tweetsListByHashTag(@PathVariable String hashTag)
 	{
 		return this.tweetService.getTweetsByHashTag(hashTag);
 	}

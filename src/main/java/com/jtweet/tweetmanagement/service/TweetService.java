@@ -13,7 +13,7 @@ import com.jtweet.tweetmanagement.repository.TweetRepository;
 public class TweetService {
 	
 	@Autowired
-	TweetRepository tweetRepository;
+	private TweetRepository tweetRepository;
 	
 	public List<Tweet> getList()
 	{
@@ -22,10 +22,11 @@ public class TweetService {
 		return tweetList;
 	}
 	
-	public List<Tweet> getTweetsByHashTag(String hashTag)
-	{
-		List<Tweet> tweetList = new ArrayList<Tweet>();
-		this.tweetRepository.findByHashTags(hashTag).forEach(tweetList::add);
-		return tweetList;
+	public List<Tweet> getTweetsByHashTag(String hashTag) {
+		return this.tweetRepository.findByHashTags(hashTag);
+	}
+
+	public List<Tweet> getTweetsByUserId(Integer userId) {
+		return this.tweetRepository.findByUserId(userId);
 	}
 }

@@ -1,6 +1,12 @@
-CustomerManagement/docker/data
-?
-node_modules
+docker/data
+log/
+target/
+?/
+# Intellij
+.idea/
+*.iml
+*.iws
+
 # Compiled class file
 *.class
 
