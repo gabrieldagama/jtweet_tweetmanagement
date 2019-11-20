@@ -1,7 +1,0 @@
-/app/src/main/java/com/jtweet/tweetmanagement/api/ResponseBody.java
-/app/src/main/java/com/jtweet/tweetmanagement/repository/TweetRepository.java
-/app/src/main/java/com/jtweet/tweetmanagement/TweetManagementApplication.java
-/app/src/main/java/com/jtweet/tweetmanagement/api/ResponseBodyConverter.java
-/app/src/main/java/com/jtweet/tweetmanagement/controller/TweetController.java
-/app/src/main/java/com/jtweet/tweetmanagement/model/Tweet.java
-/app/src/main/java/com/jtweet/tweetmanagement/service/TweetService.java
