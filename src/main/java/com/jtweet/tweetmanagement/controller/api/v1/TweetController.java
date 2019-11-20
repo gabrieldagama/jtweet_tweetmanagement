@@ -1,8 +1,9 @@
-package com.jtweet.tweetmanagement.controller;
+package com.jtweet.tweetmanagement.controller.api.v1;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,58 +14,52 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jtweet.tweetmanagement.api.ResponseBody;
-import com.jtweet.tweetmanagement.api.ResponseBodyConverter;
 import com.jtweet.tweetmanagement.model.Tweet;
 import com.jtweet.tweetmanagement.repository.TweetRepository;
-import com.jtweet.tweetmanagement.service.TweetService;
 
 @RestController
-@RequestMapping("/tweets")
+@RequestMapping("/v1/tweets")
 public class TweetController {
-	
-	@Autowired
-	private TweetService tweetService;
-	
+
 	@Autowired
 	private TweetRepository tweetRepository;
 	
 	@GetMapping
-	public List<Tweet> listTweets() {
-		return this.tweetService.getList();
+	public ResponseEntity listTweets(Pageable pageable) {
+		return ResponseEntity.status(HttpStatus.OK).body(this.tweetRepository.findAll(pageable));
 	}
 	
 	@GetMapping("/{id}")
-	public Tweet getTweet(@PathVariable String id)
-	{
-		return this.tweetRepository.findById(id).get();
+	public ResponseEntity getTweet(@PathVariable String id) throws Exception {
+		if (this.tweetRepository.findById(id).isPresent()) {
+			return ResponseEntity.status(HttpStatus.OK).body(this.tweetRepository.findById(id).get());
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 	
 	@PostMapping
 	public ResponseEntity createTweet(@RequestBody Tweet tweet)
 	{
 		this.tweetRepository.save(tweet);
-		ResponseBody responseBody = new ResponseBody(true, "Tweet created successfully");
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseBodyConverter.convert(responseBody));
+        return ResponseEntity.status(HttpStatus.CREATED).body("Tweet created successfully");
 	}
 
 	@GetMapping("/user/{userId}")
-	public List<Tweet> tweetsListByUser(@PathVariable Integer userId)
+	public ResponseEntity tweetsListByUser(@PathVariable Integer userId, Pageable pageable)
 	{
-		return this.tweetService.getTweetsByUserId(userId);
+		return ResponseEntity.status(HttpStatus.OK).body(this.tweetRepository.findByUserId(userId, pageable));
 	}
-	
+
 	@GetMapping("/hashTag/{hashTag}")
-	public List<Tweet> tweetsListByHashTag(@PathVariable String hashTag)
+	public ResponseEntity tweetsListByHashTag(@PathVariable String hashTag, Pageable pageable)
 	{
-		return this.tweetService.getTweetsByHashTag(hashTag);
+		return ResponseEntity.status(HttpStatus.OK).body(this.tweetRepository.findByHashTags(hashTag, pageable));
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity deleteTweet(@PathVariable String id)
 	{
 		this.tweetRepository.deleteById(id);
-		ResponseBody responseBody = new ResponseBody(true, "Tweet deleted successfully");
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseBodyConverter.convert(responseBody));	
+        return ResponseEntity.status(HttpStatus.OK).body("Tweet deleted successfully");
     }
 }
