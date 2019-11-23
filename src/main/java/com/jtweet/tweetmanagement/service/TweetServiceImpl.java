@@ -21,22 +21,22 @@ public class TweetServiceImpl implements TweetService{
     }
 
     @Override
-    public void deleteTweet(String id) {
-
+    public void deleteById(String id) {
+        tweetRepository.deleteById(id);
     }
 
     @Override
     public Page<Tweet> getList(Pageable pageable) {
-        return null;
+        return tweetRepository.findAll(pageable);
     }
 
     @Override
     public Page<Tweet> getListByUserId(Integer userId, Pageable pageable) {
-        return null;
+        return tweetRepository.findByUserId(userId, pageable);
     }
 
     @Override
     public Page<Tweet> getListByHashTag(String hashTag, Pageable pageable) {
-        return null;
+        return tweetRepository.findByHashTags(hashTag, pageable);
     }
 }
