@@ -14,7 +14,7 @@ public class Tweet {
 	private String tweet;
 	private ArrayList<String> hashTags;
 	
-	protected Tweet() {
+	public Tweet() {
 	}
 	
 	public Tweet(String id, Integer userId, String tweet, ArrayList<String> hashTags) {
