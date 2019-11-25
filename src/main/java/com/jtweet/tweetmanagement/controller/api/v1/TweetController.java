@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jtweet.tweetmanagement.model.Tweet;
-import com.jtweet.tweetmanagement.repository.TweetRepository;
 
 @RestController
 @RequestMapping("/v1/tweets")
