@@ -6,11 +6,18 @@ import com.jtweet.tweetmanagement.repository.TweetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-public class TweetServiceImpl implements TweetService{
+@Service
+public class TweetServiceImpl implements TweetService {
 
     @Autowired
     private TweetRepository tweetRepository;
+
+    @Override
+    public Tweet save(Tweet tweet) {
+        return tweetRepository.save(tweet);
+    }
 
     @Override
     public Tweet getById(String id) throws TweetNotFoundException {

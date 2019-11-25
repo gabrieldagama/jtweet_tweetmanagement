@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface TweetService {
+    public Tweet save(Tweet tweet);
     public Tweet getById(String id) throws TweetNotFoundException;
     public void deleteById(String id);
     public Page<Tweet> getList(Pageable pageable);

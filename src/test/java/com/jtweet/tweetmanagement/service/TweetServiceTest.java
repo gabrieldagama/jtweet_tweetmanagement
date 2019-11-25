@@ -29,6 +29,15 @@ public class TweetServiceTest {
     }
 
     @Test
+    public void testSave() {
+        Tweet tweet = Mockito.mock(Tweet.class);
+        when(tweetRepository.save(tweet)).thenReturn(tweet);
+        Tweet savedTweet = tweetService.save(tweet);
+        verify(tweetRepository, times(1)).save(tweet);
+        Assert.assertEquals(tweet, savedTweet);
+    }
+
+    @Test
     public void testGetById() throws TweetNotFoundException {
         String tweetId = "12345";
         when(tweetRepository.findById(tweetId)).thenReturn(java.util.Optional.of(new Tweet()));

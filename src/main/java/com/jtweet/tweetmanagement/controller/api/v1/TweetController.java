@@ -1,5 +1,7 @@
 package com.jtweet.tweetmanagement.controller.api.v1;
 
+import com.jtweet.tweetmanagement.exception.TweetNotFoundException;
+import com.jtweet.tweetmanagement.service.TweetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,44 +22,45 @@ import com.jtweet.tweetmanagement.repository.TweetRepository;
 public class TweetController {
 
 	@Autowired
-	private TweetRepository tweetRepository;
+	private TweetService tweetServiceImpl;
 	
 	@GetMapping
 	public ResponseEntity listTweets(Pageable pageable) {
-		return ResponseEntity.status(HttpStatus.OK).body(this.tweetRepository.findAll(pageable));
+		return ResponseEntity.status(HttpStatus.OK).body(this.tweetServiceImpl.getList(pageable));
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity getTweet(@PathVariable String id) throws Exception {
-		if (this.tweetRepository.findById(id).isPresent()) {
-			return ResponseEntity.status(HttpStatus.OK).body(this.tweetRepository.findById(id).get());
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(tweetServiceImpl.getById(id));
+		} catch (TweetNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tweet not found.");
 		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 	
 	@PostMapping
 	public ResponseEntity createTweet(@RequestBody Tweet tweet)
 	{
-		this.tweetRepository.save(tweet);
+		this.tweetServiceImpl.save(tweet);
         return ResponseEntity.status(HttpStatus.CREATED).body("Tweet created successfully");
-	}
-
-	@GetMapping("/user/{userId}")
-	public ResponseEntity tweetsListByUser(@PathVariable Integer userId, Pageable pageable)
-	{
-		return ResponseEntity.status(HttpStatus.OK).body(this.tweetRepository.findByUserId(userId, pageable));
-	}
-
-	@GetMapping("/hashTag/{hashTag}")
-	public ResponseEntity tweetsListByHashTag(@PathVariable String hashTag, Pageable pageable)
-	{
-		return ResponseEntity.status(HttpStatus.OK).body(this.tweetRepository.findByHashTags(hashTag, pageable));
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity deleteTweet(@PathVariable String id)
 	{
-		this.tweetRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Tweet deleted successfully");
-    }
+		this.tweetServiceImpl.deleteById(id);
+		return ResponseEntity.status(HttpStatus.OK).body("Tweet deleted successfully");
+	}
+
+	@GetMapping("/user/{userId}")
+	public ResponseEntity tweetsListByUser(@PathVariable Integer userId, Pageable pageable)
+	{
+		return ResponseEntity.status(HttpStatus.OK).body(this.tweetServiceImpl.getListByUserId(userId, pageable));
+	}
+
+	@GetMapping("/hashTag/{hashTag}")
+	public ResponseEntity tweetsListByHashTag(@PathVariable String hashTag, Pageable pageable)
+	{
+		return ResponseEntity.status(HttpStatus.OK).body(this.tweetServiceImpl.getListByHashTag(hashTag, pageable));
+	}
 }
