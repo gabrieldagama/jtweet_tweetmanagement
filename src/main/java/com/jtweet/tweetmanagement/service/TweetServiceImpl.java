@@ -39,7 +39,7 @@ public class TweetServiceImpl implements TweetService {
 
     @Override
     public Page<Tweet> getListByUserId(Integer userId, Pageable pageable) {
-        return tweetRepository.findByUserId(userId, pageable);
+        return tweetRepository.findByTweetUser_UserId(userId, pageable);
     }
 
     @Override

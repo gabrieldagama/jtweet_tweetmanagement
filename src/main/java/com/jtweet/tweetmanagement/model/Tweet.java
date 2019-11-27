@@ -3,6 +3,7 @@ package com.jtweet.tweetmanagement.model;
 import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "tweets")
@@ -10,17 +11,17 @@ public class Tweet {
 	
 	@Id
 	private String id;
-	private Integer userId;
+	private TweetUser tweetUser;
 	private String tweet;
 	private ArrayList<String> hashTags;
 	
 	public Tweet() {
 	}
 	
-	public Tweet(String id, Integer userId, String tweet, ArrayList<String> hashTags) {
+	public Tweet(String id, TweetUser tweetUser, String tweet, ArrayList<String> hashTags) {
 		super();
 		this.id = id;
-		this.userId = userId;
+		this.tweetUser = tweetUser;
 		this.tweet = tweet;
 		this.hashTags = hashTags;
 	}
@@ -33,12 +34,12 @@ public class Tweet {
 		this.id = id;
 	}
 
-	public Integer getUserId() {
-		return userId;
+	public TweetUser getTweetUser() {
+		return tweetUser;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setTweetUser(TweetUser tweetUser) {
+		this.tweetUser = tweetUser;
 	}
 
 	public String getTweet() {
@@ -56,6 +57,4 @@ public class Tweet {
 	public void setHashTags(ArrayList<String> hashTags) {
 		this.hashTags = hashTags;
 	}
-	
-	
 }

@@ -13,6 +13,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.*;
 
 public class TweetServiceTest {
@@ -48,8 +50,10 @@ public class TweetServiceTest {
 
     @Test(expected = TweetNotFoundException.class)
     public void testGetByIdException() throws TweetNotFoundException {
-        Tweet tweet = tweetService.getById("12345");
-        Assert.assertNotNull(tweet);
+        String tweetId = "12345";
+        Optional<Tweet> optionalTweet = Optional.empty();
+        when(tweetRepository.findById(tweetId)).thenReturn(optionalTweet);
+        tweetService.getById(tweetId);
     }
 
     @Test
@@ -74,9 +78,9 @@ public class TweetServiceTest {
         Pageable pageable = Mockito.mock(Pageable.class);
         Page<Tweet> tweets = Mockito.mock(Page.class);
         Integer userId = 123;
-        when(tweetRepository.findByUserId(userId, pageable)).thenReturn(tweets);
+        when(tweetRepository.findByTweetUser_UserId(userId, pageable)).thenReturn(tweets);
         Page<Tweet> returnedTweets = tweetService.getListByUserId(userId, pageable);
-        verify(tweetRepository, times(1)).findByUserId(userId, pageable);
+        verify(tweetRepository, times(1)).findByTweetUser_UserId(userId, pageable);
         Assert.assertEquals(tweets, returnedTweets);
     }
 

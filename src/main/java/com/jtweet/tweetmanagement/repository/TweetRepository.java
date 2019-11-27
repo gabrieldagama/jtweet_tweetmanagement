@@ -8,5 +8,5 @@ import com.jtweet.tweetmanagement.model.Tweet;
 
 public interface TweetRepository extends PagingAndSortingRepository<Tweet, String> {
 	Page<Tweet> findByHashTags(String hashTag, Pageable pageable);
-	Page<Tweet> findByUserId(Integer userId, Pageable pageable);
+	Page<Tweet> findByTweetUser_UserId(Integer userId, Pageable pageable);
 }
