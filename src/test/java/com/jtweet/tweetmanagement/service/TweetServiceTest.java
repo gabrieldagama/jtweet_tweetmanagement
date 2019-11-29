@@ -78,9 +78,9 @@ public class TweetServiceTest {
         Pageable pageable = Mockito.mock(Pageable.class);
         Page<Tweet> tweets = Mockito.mock(Page.class);
         Integer userId = 123;
-        when(tweetRepository.findByTweetUser_UserId(userId, pageable)).thenReturn(tweets);
+        when(tweetRepository.findByTweetUser_Id(userId, pageable)).thenReturn(tweets);
         Page<Tweet> returnedTweets = tweetService.getListByUserId(userId, pageable);
-        verify(tweetRepository, times(1)).findByTweetUser_UserId(userId, pageable);
+        verify(tweetRepository, times(1)).findByTweetUser_Id(userId, pageable);
         Assert.assertEquals(tweets, returnedTweets);
     }
 
